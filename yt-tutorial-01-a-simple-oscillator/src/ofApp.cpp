@@ -57,8 +57,6 @@ void ofApp::audioOut(ofSoundBuffer &buffer) {
 
 void ofApp::mouseMoved(int x, int y ) {
     
-    ofLog() << "mouseMoved" << x << " " << y;
-    
     // update oscillator frequency based on mouse x-position
     m_frequency = (double) ofMap(x, 0, ofGetWidth(), 110, 880);
     
