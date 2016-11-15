@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxMaxim.h"
+#include "ofxGui.h"
 
 
 class ofApp : public ofBaseApp{
@@ -16,12 +17,15 @@ class ofApp : public ofBaseApp{
     unsigned int m_buffer_size;
     double m_mixer_output[2];
     
+    ofxPanel m_gui;
+    ofParameter<bool> m_param_enable_gater_fx;
+    
 public:
     void setup();
     void update();
     void draw();
     void exit();
-    void audioOut(float * output, int bufferSize, int nChannels);
+    void audioOut(float *output, int bufferSize, int nChannels);
 //    void audioOut(ofSoundBuffer &buffer);
 //    void keyPressed(int key);
 //    void keyReleased(int key);

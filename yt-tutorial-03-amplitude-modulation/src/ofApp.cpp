@@ -24,6 +24,10 @@ void ofApp::setup() {
     // sets up and starts a global ofSoundStream.
     ofSoundStreamSetup(2, 0, m_sample_rate, m_buffer_size, 4);
     
+    // setup gui to toggle gater effect
+    m_gui.setup("Audio Controls");
+    m_gui.setPosition(10, 50);
+    m_gui.add(m_param_enable_gater_fx.set("gater effect", false));
 }
 
 
@@ -32,6 +36,13 @@ void ofApp::update() {
 
 
 void ofApp::draw() {
+    
+    // draw info about amplitude modulation frequency
+    ofDrawBitmapString("amplitude modulation frequency: " + to_string(m_amp_frequency), 10, 21);
+    
+    // draw gui
+    m_gui.draw();
+    
 }
 
 
@@ -47,15 +58,21 @@ void ofApp::exit() {
 // it should still be used in connection with ofxMaxim!
 // Using the more current audioOut(ofSoundBuffer) method leads to strange errors,
 // which only happen irregularly/occasionally.
-void ofApp::audioOut(float * output, int bufferSize, int nChannels) {
+void ofApp::audioOut(float *output, int bufferSize, int nChannels) {
     
     // loop over all samples in buffer
     for (unsigned int i = 0; i < bufferSize; ++i) {
         // calculate current sample with oscillator
-        m_current_sample = m_oscillator.saw(m_frequency) * m_amplitude_mod.sinewave(m_amp_frequency);
+        if (m_param_enable_gater_fx) {
+            // use square qave to create gater effect.
+            m_current_sample = m_oscillator.saw(m_frequency) * ((m_amplitude_mod.square(m_amp_frequency)+1)/2);
+        } else {
+            // oscillate amplitude between -1.0 and 1.0
+            m_current_sample = m_oscillator.saw(m_frequency) * m_amplitude_mod.sinewave(m_amp_frequency);
+        }
         
         // mix current sample to stereo channels.
-        // 0.5 sets sample output equally to both channels. 0.0 = left, 1.0 = right
+        // panning of 0.5 sets sample output equally to both channels. 0.0 = left, 1.0 = right
         m_mixer.stereo(m_current_sample, m_mixer_output, 0.5);
         
         // write sample data to buffer
