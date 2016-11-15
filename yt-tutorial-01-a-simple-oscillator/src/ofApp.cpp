@@ -18,6 +18,9 @@ void ofApp::setup() {
     ofBackground(0);
     ofSetWindowTitle("A Simple Oscillator");
     
+    // define global settings for ofxMaxim.
+    maxiSettings::setup(m_sample_rate, 2, m_buffer_size);
+    
     // sets up and starts a global ofSoundStream.
     ofSoundStreamSetup(2, 0, m_sample_rate, m_buffer_size, 4);
     
@@ -40,16 +43,20 @@ void ofApp::exit() {
 }
 
 
-void ofApp::audioOut(ofSoundBuffer &buffer) {
+// Although audioOut(float, int, int) method is marked as deprecated in the oF source,
+// it should still be used in connection with ofxMaxim!
+// Using the more current audioOut(ofSoundBuffer) method leads to strange errors,
+// which only happen irregularly/occasionally.
+void ofApp::audioOut(float *output, int bufferSize, int nChannels) {
     
     // loop over all samples in buffer
-    for (size_t i = 0; i < buffer.size(); ++i) {
+    for (size_t i = 0; i < bufferSize; ++i) {
         // calculate current sample with oscillator
-        m_current_sample = m_oscillator.square(m_frequency);
+        m_current_sample = m_oscillator.square(m_frequency) * m_amplitude;
         
         // write sample data to buffer
-        buffer.getSample(i, 0) = m_current_sample * m_amplitude; // left channel
-        buffer.getSample(i, 1) = m_current_sample * m_amplitude; // right channel
+        output[i * nChannels] = m_current_sample; // left channel
+        output[i * nChannels + 1] = m_current_sample; // right channel
     }
     
 }
@@ -57,10 +64,10 @@ void ofApp::audioOut(ofSoundBuffer &buffer) {
 
 void ofApp::mouseMoved(int x, int y ) {
     
-    // update oscillator frequency based on mouse x-position
+    // map oscillator frequency to horizontal mouse movement
     m_frequency = (double) ofMap(x, 0, ofGetWidth(), 110, 880);
     
-    // update sample amplitude based on mouse y-position
+    // map sample amplitude to vertical mouse movement
     m_amplitude = ofMap(y, 0, ofGetHeight(), 1.f, 0.f);
     
 }
