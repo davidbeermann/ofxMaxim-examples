@@ -4,7 +4,7 @@
 #include "ofxMaxim.h"
 
 
-class ofApp : public ofBaseApp{
+class ofApp : public ofBaseApp {
 
     maxiOsc m_oscillator;
     double m_frequency;

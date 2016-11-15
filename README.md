@@ -9,3 +9,8 @@ ofxMaxim is a wrapper for the [Maximilian](http://maximilian.strangeloop.co.uk/)
 Apart from the C++ implementation the library was ported to JavaScript and released under [Maxim](https://github.com/micknoise/Maxim).
 
 A little history and demo of the library can be found here: [Maximilian: C++ Audio and Music DSP Library, Mick Grierson, JUCE Summit 2015](https://www.youtube.com/watch?v=H-Av78mtFF4).
+
+## Futher examples
+
+* [openFrameworksExamples](https://github.com/micknoise/Maximilian/tree/master/openFrameworks/openFrameworksExamples) by [@micknoise](https://github.com/micknoise)
+* [examplesOfxMaxim](https://github.com/edap/examplesOfxMaxim/) by [@edap](https://github.com/edap)
