@@ -17,20 +17,6 @@ void ofApp::setup() {
 }
 
 
-void ofApp::update() {
-
-    m_clock.ticker(); // This makes the clock object count at the current samplerate
-    
-    //This is a 'conditional'. It does a test and then does something if the test is true
-    if (m_clock.tick) { // If there is an actual tick at this time, this will be true.
-        
-        m_frequency += 100; // DO SOMETHING
-        
-    } // The curly braces close the conditional
-    
-}
-
-
 void ofApp::exit() {
     
     ofSoundStreamClose();
@@ -42,6 +28,16 @@ void ofApp::audioOut(float *output, int buffer_size, int channels) {
     
     double osc_value;
     for (unsigned int i = 0; i < buffer_size; ++i) {
+        
+        m_clock.ticker(); // This makes the clock object count at the current samplerate
+        
+        //This is a 'conditional'. It does a test and then does something if the test is true
+        if (m_clock.tick) { // If there is an actual tick at this time, this will be true.
+            
+            m_frequency += 100; // DO SOMETHING
+            
+        } // The curly braces close the conditional
+        
         //simple as that!
         osc_value = m_osc.sinewave(m_frequency);
         
